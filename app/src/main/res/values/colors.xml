@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200ee</color>
+    <color name="colorPrimaryDark">#3f00df</color>
+    <color name="colorAccent">#6100ed</color>
+    <color name="colorRegisterBack">#f3f3f3</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorEditBorder">#995dff</color>
+    <color name="colorTabChecked">#ffffff</color>
+    <color name="colorTabUnchecked">#bcbcbc</color>
+</resources>

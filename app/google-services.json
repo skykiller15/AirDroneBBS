@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "168953119942",
+    "firebase_url": "https://airdrone-3b586.firebaseio.com",
+    "project_id": "airdrone-3b586",
+    "storage_bucket": "airdrone-3b586.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168953119942:android:729b4135623ec6d2",
+        "android_client_info": {
+          "package_name": "com.kurofish.airdronebbs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168953119942-no2g9cft8u2mghov51q6i1rl8tqet4dv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbvR31rN-t9uLOE8NtslLeSVQb3P_BzR0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

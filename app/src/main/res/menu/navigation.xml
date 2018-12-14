@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_bbs"
+        android:icon="@drawable/ic_question_answer_black_24dp"
+        android:title="论坛" />
+
+    <item
+        android:id="@+id/navigation_teaching"
+        android:icon="@drawable/ic_group_work_black_24dp"
+        android:title="教学" />
+
+    <item
+        android:id="@+id/navigation_trade"
+        android:icon="@drawable/ic_store_black_24dp"
+        android:title="交易" />
+
+    <item
+        android:id="@+id/navigation_doing"
+        android:icon="@drawable/ic_explore_black_24dp"
+        android:title="活动" />
+
+    <item
+        android:id="@+id/navigation_me"
+        android:icon="@drawable/ic_perm_identity_black_24dp"
+        android:title="我" />
+
+</menu>
