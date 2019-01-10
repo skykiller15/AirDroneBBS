@@ -6,6 +6,8 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="register">Register</string>
     <string name="create_an_account">Create an Account</string>
+    <string name="log_in">Welcome</string>
+    <string name="log_out">Log out</string>
     <string name="r_username_hint">Full Name</string>
     <string name="r_email_hint">Email</string>
     <string name="r_password_hint">Password</string>
@@ -20,4 +22,14 @@
         completions."
     </string>
     <string name="search_hint">Search what you want</string>
+
+    <!-- Strings related to bbs -->
+    <string name="mainTitle">Main Title</string>
+    <string name="subTitle">Sub Title</string>
+    <string name="bbs_hot_section">Hot</string>
+    <string name="bbs_new_section">New</string>
+    <string name="bbs_tech_section">Tech</string>
+    <string name="bbs_chat_section">Chat</string>
+    <string name="tech_collection_id">BBSTechPosts</string>
+    <string name="chat_collection_id">BBSChatPosts</string>
 </resources>

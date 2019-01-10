@@ -3,9 +3,12 @@
     <color name="colorPrimary">#6200ee</color>
     <color name="colorPrimaryDark">#3f00df</color>
     <color name="colorAccent">#6100ed</color>
-    <color name="colorRegisterBack">#f3f3f3</color>
+    <color name="colorBackground">#f3f3f3</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorEditBorder">#995dff</color>
     <color name="colorTabChecked">#ffffff</color>
     <color name="colorTabUnchecked">#bcbcbc</color>
+    <color name="colorMediumBlack">#656565</color>
+    <color name="colorHighBlack">#202020</color>
+    <color name="colorSecondary">#03dac5</color>
 </resources>
