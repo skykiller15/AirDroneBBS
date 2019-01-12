@@ -1,7 +1,6 @@
 package com.kurofish.airdronebbs;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -23,15 +22,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class BbsTechSectionFragment extends Fragment {
+public class BbsChatSectionFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private ProgressBar progressBar;
 
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter adapter;
-
-    private long isLoved = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,15 +60,15 @@ public class BbsTechSectionFragment extends Fragment {
 
 
     private void showPosts() {
-        Query query = db.collection(getString(R.string.tech_collection_id)).orderBy("time", Query.Direction.DESCENDING);
+        Query query = db.collection(getString(R.string.chat_collection_id)).orderBy("time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<BbsPost> response = new FirestoreRecyclerOptions.Builder<BbsPost>()
                 .setQuery(query, BbsPost.class)
                 .build();
 
-        adapter = new FirestoreRecyclerAdapter<BbsPost, BbsTechSectionFragment.CardViewHolder>(response) {
+        adapter = new FirestoreRecyclerAdapter<BbsPost, BbsChatSectionFragment.CardViewHolder>(response) {
             @Override
-            public void onBindViewHolder(@NonNull BbsTechSectionFragment.CardViewHolder holder, int position, @NonNull BbsPost model) {
+            public void onBindViewHolder(@NonNull BbsChatSectionFragment.CardViewHolder holder, int position, @NonNull BbsPost model) {
                 holder.mainTitleTV.setText(model.getMain_title());
                 holder.subTitleTV.setText(model.getSub_title());
                 final BbsPost post = model;
@@ -79,7 +76,7 @@ public class BbsTechSectionFragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Query query1 = db.collection(getString(R.string.tech_collection_id)).whereEqualTo("time", post.getTime());
+                        Query query1 = db.collection(getString(R.string.chat_collection_id)).whereEqualTo("time", post.getTime());
                         query1.get()
                                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
@@ -88,7 +85,7 @@ public class BbsTechSectionFragment extends Fragment {
                                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                                         Bundle bundle = new Bundle();
                                         bundle.putParcelable("post", post);
-                                        bundle.putString("collectionID", getString(R.string.tech_collection_id));
+                                        bundle.putString("collectionID", getString(R.string.chat_collection_id));
                                         bundle.putString("documentID", docID);
                                         intent.putExtras(bundle);
                                         startActivity(intent);
@@ -100,11 +97,11 @@ public class BbsTechSectionFragment extends Fragment {
 
             @NonNull
             @Override
-            public BbsTechSectionFragment.CardViewHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
+            public BbsChatSectionFragment.CardViewHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
                 View view = LayoutInflater.from(group.getContext())
                         .inflate(R.layout.item_bbs_post, group, false);
 
-                return new BbsTechSectionFragment.CardViewHolder(view);
+                return new BbsChatSectionFragment.CardViewHolder(view);
             }
 
             @Override
@@ -128,23 +125,6 @@ public class BbsTechSectionFragment extends Fragment {
             mainTitleTV = itemView.findViewById(R.id.bpMainTitleText);
             subTitleTV = itemView.findViewById(R.id.bpSubTitleText);
             loveFAB = itemView.findViewById(R.id.bpLoveFAB);
-
-            loveFAB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (isLoved == 0) {
-                        loveFAB.setImageResource(R.drawable.ic_favorite_24dp);
-                        isLoved = 1;
-                    } else if (isLoved == 1) {
-                        loveFAB.setImageResource(R.drawable.ic_favorite_border_24dp);
-                        isLoved = -1;
-                    } else if (isLoved == -1) {
-                        loveFAB.setImageResource(R.drawable.ic_favorite_24dp);
-                        isLoved = 1;
-                    }
-                }
-            });
         }
     }
-
 }

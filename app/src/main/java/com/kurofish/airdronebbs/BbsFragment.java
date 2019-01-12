@@ -1,10 +1,13 @@
 package com.kurofish.airdronebbs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,102 +24,69 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 public class BbsFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private BbsFPAdapter bbsFPAdapter = null;
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-
-    private FirebaseFirestore db;
-    private FirestoreRecyclerAdapter adapter;
+    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private ArrayList<String> tabIndicators = new ArrayList<>();
+    private FloatingActionButton addPostFAB;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_bbs, container, false);
-        /*tabLayout = view.findViewById(R.id.bTabLayout);
+        tabLayout = view.findViewById(R.id.bTabLayout);
         viewPager = view.findViewById(R.id.bViewPager);
+        addPostFAB = view.findViewById(R.id.addPostFAB);
+
+        fragments.add(new BbsTechSectionFragment());
+        fragments.add(new BbsChatSectionFragment());
+
+        tabIndicators.add(getString(R.string.bbs_tech_section));
+        tabIndicators.add(getString(R.string.bbs_chat_section));
         bbsFPAdapter = new BbsFPAdapter(getChildFragmentManager());
         Log.d("BBSTAG", "test");
 
         viewPager.setAdapter(bbsFPAdapter);
-        tabLayout.setupWithViewPager(viewPager);*/
-        db = FirebaseFirestore.getInstance();
-        progressBar = view.findViewById(R.id.bProgressBar);
-        recyclerView = view.findViewById(R.id.tmpRecyclerView);
-
-        progressBar.setVisibility(View.VISIBLE);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        showPosts();
-        progressBar.setVisibility(View.GONE);
-        //recyclerView.setAdapter();
+        tabLayout.setupWithViewPager(viewPager);
+        addPostFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String section = tabIndicators.get(tabLayout.getSelectedTabPosition());
+                Log.d("BBSTAG", "now section is " + section);
+                Bundle bundle = new Bundle();
+                bundle.putString("section_name", section);
+                Intent intent = new Intent(getActivity(), BbsAddPostActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                //Objects.requireNonNull(getActivity()).finish();
+            }
+        });
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
+    public class BbsFPAdapter extends FragmentPagerAdapter {
+        public BbsFPAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
+        @Override
+        public Fragment getItem(int i) {
+            return fragments.get(i);
+        }
 
+        @Override
+        public int getCount() {
+            return tabIndicators.size();
+        }
 
-    private void showPosts() {
-        Query query = db.collection(getString(R.string.tech_collection_id));
-
-        FirestoreRecyclerOptions<BbsPost> response = new FirestoreRecyclerOptions.Builder<BbsPost>()
-                .setQuery(query, BbsPost.class)
-                .build();
-
-        adapter = new FirestoreRecyclerAdapter<BbsPost, CardViewHolder>(response) {
-            @Override
-            public void onBindViewHolder(@NonNull CardViewHolder holder, int position, @NonNull BbsPost model) {
-                holder.mainTitleTV.setText(model.getMain_title());
-                holder.subTitleTV.setText(model.getSub_title());
-
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-            }
-
-            @NonNull
-            @Override
-            public CardViewHolder onCreateViewHolder(@NonNull ViewGroup group, int i) {
-                View view = LayoutInflater.from(group.getContext())
-                        .inflate(R.layout.item_bbs_post, group, false);
-
-                return new CardViewHolder(view);
-            }
-
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Log.e("error", e.getMessage());
-            }
-        };
-
-        adapter.notifyDataSetChanged();
-        recyclerView.addItemDecoration(new SpaceItemDecoration(0, 16));
-        recyclerView.setAdapter(adapter);
-    }
-
-    public class CardViewHolder extends RecyclerView.ViewHolder {
-        private TextView mainTitleTV;
-        private TextView subTitleTV;
-        private FloatingActionButton loveFAB;
-
-        public CardViewHolder(View itemView) {
-            super(itemView);
-            mainTitleTV = itemView.findViewById(R.id.bpMainTitleText);
-            subTitleTV = itemView.findViewById(R.id.bpSubTitleText);
-            loveFAB = itemView.findViewById(R.id.bpLoveFAB);
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabIndicators.get(position);
         }
     }
 
