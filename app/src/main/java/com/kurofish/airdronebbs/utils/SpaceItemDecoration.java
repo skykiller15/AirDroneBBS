@@ -1,4 +1,4 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.utils;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;

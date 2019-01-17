@@ -18,8 +18,8 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,10 +27,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".BbsAddPostActivity"
+            android:name=".activities.BbsAddPostActivity"
             android:label="@string/add_post" />
         <activity
-            android:name=".PostDetailActivity"
+            android:name=".activities.PostDetailActivity"
             android:label="@string/title_activity_post_detail"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

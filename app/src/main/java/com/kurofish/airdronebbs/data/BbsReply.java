@@ -1,4 +1,4 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.data;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,24 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
+import com.kurofish.airdronebbs.activities.BbsAddPostActivity;
+import com.kurofish.airdronebbs.R;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class BbsFragment extends Fragment {
     private TabLayout tabLayout;

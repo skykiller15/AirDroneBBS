@@ -1,6 +1,5 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.fragments;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.kurofish.airdronebbs.activities.LoginActivity;
+import com.kurofish.airdronebbs.R;
 
 import java.util.Objects;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

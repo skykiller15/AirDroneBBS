@@ -42,6 +42,7 @@
     <string name="text_post">Text</string>
     <string name="title_activity_post_detail">Post Detail</string>
     <string name="invalid_post">Please input all the contents</string>
+    <string name="sensitive_post">The input has sensitive words. Please check it</string>
 
     <!-- Strings related to a post's detail -->
     <string name="avatar_name">A</string>
@@ -52,6 +53,11 @@
     <string name="pre_text">Text</string>
     <string name="reply_hint">Input your reply…</string>
     <string name="send_reply">Send</string>
+    <string name="delete_post">Delete</string>
+    <string name="descending_view">Show in Descending</string>
+    <string name="delete_message">Are you sure to delete?</string>
+    <string name="yes_delete">Yes</string>
+    <string name="no_delete">Cancel</string>
 
     <!-- Strings related to me fragment -->
     <string name="avatar">A</string>

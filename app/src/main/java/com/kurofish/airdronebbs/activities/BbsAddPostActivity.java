@@ -1,6 +1,7 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.activities;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +17,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.kurofish.airdronebbs.data.BbsPost;
+import com.kurofish.airdronebbs.R;
+import com.kurofish.airdronebbs.utils.BadWordUtil2;
 
-import java.text.SimpleDateFormat;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 public class BbsAddPostActivity extends AppCompatActivity {
@@ -34,6 +38,7 @@ public class BbsAddPostActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private CollectionReference postRef;
 
     final static private String TAG = "ADDPOST";
 
@@ -90,12 +95,27 @@ public class BbsAddPostActivity extends AppCompatActivity {
             return false;
         }
 
+        AssetManager assetManager = getAssets();
+        InputStream in;
+        try {
+            in = assetManager.open("dictionary.txt");
+            BadWordUtil2 badWordUtil2 = new BadWordUtil2(in);
+            if (badWordUtil2.isContaintBadWord(mainTitle, 1)
+                    || badWordUtil2.isContaintBadWord(subTitle, 1)
+                    || badWordUtil2.isContaintBadWord(text, 1)) {
+                Toast.makeText(this, getString(R.string.sensitive_post), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         Date date = new Date(System.currentTimeMillis());
         newPost.setTime(date);
 
         newPost.setClick(0);
 
-        CollectionReference postRef = db.collection(collectionID);
+        postRef = db.collection(collectionID);
         Query query = postRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -103,22 +123,21 @@ public class BbsAddPostActivity extends AppCompatActivity {
                 BbsPost maxBbsPost = queryDocumentSnapshots.toObjects(BbsPost.class).get(0);
                 long maxID = maxBbsPost.getId() + 1;
                 newPost.setId(maxID);
+                postRef.add(newPost)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "Add post succeed");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "Add post failed");
+                            }
+                        });
             }
         });
-
-        postRef.add(newPost)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "Add post succeed");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Add post failed");
-                    }
-                });
 
         return true;
     }

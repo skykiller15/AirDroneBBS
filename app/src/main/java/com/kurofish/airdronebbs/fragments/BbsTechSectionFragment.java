@@ -1,7 +1,6 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.fragments;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.kurofish.airdronebbs.data.BbsPost;
+import com.kurofish.airdronebbs.activities.PostDetailActivity;
+import com.kurofish.airdronebbs.R;
+import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 
 public class BbsTechSectionFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -85,6 +88,7 @@ public class BbsTechSectionFragment extends Fragment {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                         String docID = queryDocumentSnapshots.getDocuments().get(0).getReference().getId();
+                                        queryDocumentSnapshots.getDocuments().get(0).getReference().update("click", post.getClick() + 1);
                                         Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                                         Bundle bundle = new Bundle();
                                         bundle.putParcelable("post", post);

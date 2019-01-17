@@ -1,18 +1,19 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.activities;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +27,19 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.kurofish.airdronebbs.data.BbsPost;
+import com.kurofish.airdronebbs.data.BbsReply;
+import com.kurofish.airdronebbs.R;
+import com.kurofish.airdronebbs.utils.BadWordUtil2;
+import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
@@ -57,6 +64,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private String parentCollectionID;
     private String documentID;
+    private boolean isDescending = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,14 +140,19 @@ public class PostDetailActivity extends AppCompatActivity {
 
 
     void showReplies() {
-        Query query = db.collection(parentCollectionID).document(documentID).collection("replies").orderBy("time");
+        Query query;
+        if (isDescending) {
+            query = db.collection(parentCollectionID).document(documentID).collection("replies").orderBy("time", Query.Direction.DESCENDING);
+        } else {
+            query = db.collection(parentCollectionID).document(documentID).collection("replies").orderBy("time");
+        }
         FirestoreRecyclerOptions<BbsReply> response = new FirestoreRecyclerOptions.Builder<BbsReply>()
                 .setQuery(query, BbsReply.class)
                 .build();
 
         adapter = new FirestoreRecyclerAdapter<BbsReply, PostDetailActivity.CardViewHolder>(response) {
             @Override
-            public void onBindViewHolder(@NonNull PostDetailActivity.CardViewHolder holder, int position, @NonNull BbsReply model) {
+            public void onBindViewHolder(@NonNull PostDetailActivity.CardViewHolder holder, int position, @NonNull final BbsReply model) {
                 holder.authorTV.setText(model.getAuthor());
 
                 String avatar = model.getAuthor().substring(0, 1).toUpperCase();
@@ -164,6 +177,43 @@ public class PostDetailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
 
+                    }
+                });
+
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (post.getAuthor().equals(mAuth.getCurrentUser().getDisplayName()) ||
+                                model.getAuthor().equals(mAuth.getCurrentUser().getDisplayName())) {
+                            final AlertDialog.Builder normalDialog =
+                                    new AlertDialog.Builder(PostDetailActivity.this);
+                            normalDialog.setMessage(getString(R.string.delete_message));
+                            normalDialog.setPositiveButton(getString(R.string.yes_delete),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            db.collection(parentCollectionID).document(documentID)
+                                                    .collection("replies").whereEqualTo("time", model.getTime())
+                                                    .get()
+                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                            queryDocumentSnapshots.getDocuments().get(0).getReference().delete();
+                                                        }
+                                                    });
+                                        }
+                                    });
+                            normalDialog.setNegativeButton(getString(R.string.no_delete),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+                            // 显示
+                            normalDialog.show();
+                        }
+                        return false;
                     }
                 });
             }
@@ -212,6 +262,21 @@ public class PostDetailActivity extends AppCompatActivity {
         String text = replyEditText.getText().toString();
         newReply.setText(text);
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        AssetManager assetManager = getAssets();
+        try {
+            InputStream in = assetManager.open("dictionary.txt");
+            BadWordUtil2 badWordUtil2 = new BadWordUtil2(in);
+            if (badWordUtil2.isContaintBadWord(text, 1)) {
+                Toast.makeText(this, getString(R.string.sensitive_post), Toast.LENGTH_SHORT).show();
+                replyEditText.requestFocus();
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // add the reply to the db
         Query query = db.collection(parentCollectionID).whereEqualTo("time", post.getTime());
         query.get()
@@ -224,7 +289,6 @@ public class PostDetailActivity extends AppCompatActivity {
                 });
         replyEditText.setText("");
         replyEditText.clearFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
 
@@ -241,9 +305,50 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_post_detail, menu);
+        if (!post.getAuthor().equals(mAuth.getCurrentUser().getDisplayName())) {
+            menu.getItem(0).setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
+        }
+
+        if (item.getItemId() == R.id.deleteItem) {
+            final AlertDialog.Builder normalDialog =
+                    new AlertDialog.Builder(PostDetailActivity.this);
+            normalDialog.setMessage(getString(R.string.delete_message));
+            normalDialog.setPositiveButton(getString(R.string.yes_delete),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            db.collection(parentCollectionID).document(documentID).delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            finish();
+                                        }
+                                    });
+                        }
+                    });
+            normalDialog.setNegativeButton(getString(R.string.no_delete),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+            // 显示
+            normalDialog.show();
+        }
+
+        if (item.getItemId() == R.id.descendingItem) {
+            isDescending = !isDescending;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -1,4 +1,4 @@
-package com.kurofish.airdronebbs;
+package com.kurofish.airdronebbs.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.kurofish.airdronebbs.MainActivity;
+import com.kurofish.airdronebbs.R;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginTAG";
