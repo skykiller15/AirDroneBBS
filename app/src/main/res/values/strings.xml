@@ -67,4 +67,27 @@
     <string name="my_orders">My Orders</string>
     <string name="my_videos">My Videos</string>
     <string name="my_activities">My Activities</string>
+
+    <!-- Strings related to trade fragment -->
+    <string name="item_image">Air Drone</string>
+    <string name="item_name">Inspire</string>
+    <string name="item_price">$ 199.99</string>
+    <string name="item_collection_id">TradeItem</string>
+
+    <!-- Strings related to add an item -->
+    <string name="add_item_title">Upload an Item</string>
+    <string name="add_item_name">Name</string>
+    <string name="add_item_price">Price</string>
+    <string name="add_item_image">Item Image</string>
+    <string name="add_item_button">Upload</string>
+
+    <!-- Strings related to teaching fragment -->
+    <string name="video_image">Teaching Video</string>
+    <string name="video_title">Air Drone</string>
+    <string name="video_intro">It\'s an amazing air drone</string>
+    <string name="video_length">99:99</string>
+    <string name="video_click">99</string>
+    <string name="video_collection_id">VideoPosts</string>
+    <string name="video_click_image">Played Times</string>
+    <string name="title_activity_store_add_item">StoreAddItemActivity</string>
 </resources>

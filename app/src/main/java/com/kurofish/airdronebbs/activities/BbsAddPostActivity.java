@@ -114,7 +114,6 @@ public class BbsAddPostActivity extends AppCompatActivity {
         newPost.setTime(date);
 
         newPost.setClick(0);
-
         postRef = db.collection(collectionID);
         Query query = postRef.orderBy("id", Query.Direction.DESCENDING).limit(1);
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

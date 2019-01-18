@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200ee</color>
-    <color name="colorPrimaryDark">#3f00df</color>
-    <color name="colorAccent">#6100ed</color>
+    <color name="colorPrimary">#202020</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#202020</color>
     <color name="colorBackground">#f3f3f3</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorEditBorder">#995dff</color>
@@ -10,6 +10,6 @@
     <color name="colorTabUnchecked">#bcbcbc</color>
     <color name="colorMediumBlack">#656565</color>
     <color name="colorHighBlack">#202020</color>
-    <color name="colorSecondary">#03dac5</color>
+    <color name="colorSecondary">#ffffff</color>
     <color name="colorLightBlack">#9e9e9e</color>
 </resources>

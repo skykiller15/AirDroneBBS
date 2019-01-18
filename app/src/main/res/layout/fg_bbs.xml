@@ -15,9 +15,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorPrimary"
         app:tabIndicatorColor="@color/colorSecondary"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextColor="@color/colorMediumBlack">
+        app:tabSelectedTextColor="@color/colorWhite"
+        app:tabTextColor="@color/colorLightBlack">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"

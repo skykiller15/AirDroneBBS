@@ -11,13 +11,13 @@ import android.view.MenuItem;
 import com.kurofish.airdronebbs.fragments.BbsFragment;
 import com.kurofish.airdronebbs.fragments.DoingFragment;
 import com.kurofish.airdronebbs.fragments.MeFragment;
+import com.kurofish.airdronebbs.fragments.StoreFragment;
 import com.kurofish.airdronebbs.fragments.TeachingFragment;
-import com.kurofish.airdronebbs.fragments.TradeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private TeachingFragment teachingFragment;
-    private TradeFragment tradeFragment;
+    private StoreFragment storeFragment;
     private BbsFragment bbsFragment;
     private DoingFragment doingFragment;
     private MeFragment meFragment;
@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         teachingFragment = new TeachingFragment();
-        tradeFragment = new TradeFragment();
+        storeFragment = new StoreFragment();
         bbsFragment = new BbsFragment();
         doingFragment = new DoingFragment();
         meFragment = new MeFragment();
-        fragments = new Fragment[]{bbsFragment, teachingFragment, tradeFragment, doingFragment, meFragment};
+        fragments = new Fragment[]{bbsFragment, teachingFragment, storeFragment, doingFragment, meFragment};
 
         fragmentManager = getFragmentManager();
 
@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
         if (bbsFragment != null) {
             transaction.hide(bbsFragment);
         }
-        if (tradeFragment != null) {
-            transaction.hide(tradeFragment);
+        if (storeFragment != null) {
+            transaction.hide(storeFragment);
         }
         if (doingFragment != null) {
             transaction.hide(doingFragment);

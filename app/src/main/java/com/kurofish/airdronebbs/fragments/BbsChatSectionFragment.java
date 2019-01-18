@@ -34,6 +34,8 @@ public class BbsChatSectionFragment extends Fragment {
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter adapter;
 
+    private int isLoved = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -130,6 +132,22 @@ public class BbsChatSectionFragment extends Fragment {
             mainTitleTV = itemView.findViewById(R.id.bpMainTitleText);
             subTitleTV = itemView.findViewById(R.id.bpSubTitleText);
             loveFAB = itemView.findViewById(R.id.bpLoveFAB);
+
+            loveFAB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isLoved == 0) {
+                        loveFAB.setImageResource(R.drawable.ic_favorite_24dp);
+                        isLoved = 1;
+                    } else if (isLoved == 1) {
+                        loveFAB.setImageResource(R.drawable.ic_favorite_border_24dp);
+                        isLoved = -1;
+                    } else if (isLoved == -1) {
+                        loveFAB.setImageResource(R.drawable.ic_favorite_24dp);
+                        isLoved = 1;
+                    }
+                }
+            });
         }
     }
 }
