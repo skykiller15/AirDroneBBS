@@ -63,7 +63,8 @@
     <string name="avatar">A</string>
     <string name="user_name">Admin</string>
     <string name="email">foo@bar.com</string>
-    <string name="my_posts">My Posts</string>
+    <string name="my_tech_posts">My Tech Posts</string>
+    <string name="my_chat_posts">My Chat Posts</string>
     <string name="my_orders">My Orders</string>
     <string name="my_videos">My Videos</string>
     <string name="my_activities">My Activities</string>
@@ -90,4 +91,9 @@
     <string name="video_collection_id">VideoPosts</string>
     <string name="video_click_image">Played Times</string>
     <string name="title_activity_store_add_item">StoreAddItemActivity</string>
+    <string name="title_activity_my_acts">MyActsActivity</string>
+    <string name="title_activity_my_orders">MyOrdersActivity</string>
+    <string name="title_activity_my_posts">MyPostsActivity</string>
+    <string name="title_activity_my_videos">MyVideosActivity</string>
+    <string name="title_activity_my_chat_posts">MyChatPostsActivity</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.kurofish.airdronebbs.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,8 @@ import com.kurofish.airdronebbs.data.BbsPost;
 import com.kurofish.airdronebbs.activities.PostDetailActivity;
 import com.kurofish.airdronebbs.R;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
+
+import java.util.Random;
 
 public class BbsChatSectionFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -77,7 +80,23 @@ public class BbsChatSectionFragment extends Fragment {
             public void onBindViewHolder(@NonNull BbsChatSectionFragment.CardViewHolder holder, int position, @NonNull BbsPost model) {
                 holder.mainTitleTV.setText(model.getMain_title());
                 holder.subTitleTV.setText(model.getSub_title());
+                holder.authorTV.setText(model.getAuthor());
                 final BbsPost post = model;
+                String author = post.getAuthor();
+                String avatar = author.substring(0, 1).toUpperCase();
+                holder.avatarTV.setText(avatar);
+                Random random = new Random();
+                int r, g, b;
+                r = random.nextInt(255);
+                g = random.nextInt(255);
+                b = random.nextInt(255);
+                // if background is more likely to white
+                if (r+g+b > 255*3/2) {
+                    holder.avatarTV.setTextColor(Color.BLACK);
+                } else {
+                    holder.avatarTV.setTextColor(Color.WHITE);
+                }
+                holder.avatarTV.setBackgroundColor(Color.rgb(r, g, b));
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -126,12 +145,16 @@ public class BbsChatSectionFragment extends Fragment {
         private TextView mainTitleTV;
         private TextView subTitleTV;
         private FloatingActionButton loveFAB;
+        private TextView avatarTV;
+        private TextView authorTV;
 
         public CardViewHolder(View itemView) {
             super(itemView);
             mainTitleTV = itemView.findViewById(R.id.bpMainTitleText);
             subTitleTV = itemView.findViewById(R.id.bpSubTitleText);
             loveFAB = itemView.findViewById(R.id.bpLoveFAB);
+            avatarTV = itemView.findViewById(R.id.postAvatarTextView);
+            authorTV = itemView.findViewById(R.id.postAuthorTextView);
 
             loveFAB.setOnClickListener(new View.OnClickListener() {
                 @Override

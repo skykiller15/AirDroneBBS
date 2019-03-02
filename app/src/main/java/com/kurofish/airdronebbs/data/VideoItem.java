@@ -8,6 +8,7 @@ public class VideoItem {
     private String thumbnail;
     private String title;
     private String uploader;
+    private String md5;
 
     public long getClick() {
         return click;
@@ -63,5 +64,13 @@ public class VideoItem {
 
     public void setUploader(String uploader) {
         this.uploader = uploader;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 }

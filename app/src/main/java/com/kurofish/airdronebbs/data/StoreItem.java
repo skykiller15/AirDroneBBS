@@ -6,6 +6,7 @@ public class StoreItem {
     private String pic_name;
     private long price;
     private String publisher;
+    private String md5;
 
     public long getId() {
         return id;
@@ -45,5 +46,13 @@ public class StoreItem {
 
     public void setPublisher(String publisher) {
         this.publisher = publisher;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 }
