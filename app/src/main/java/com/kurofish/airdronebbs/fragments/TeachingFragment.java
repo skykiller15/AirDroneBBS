@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -32,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kurofish.airdronebbs.R;
+import com.kurofish.airdronebbs.activities.PlayVideoActivity;
 import com.kurofish.airdronebbs.activities.PostDetailActivity;
 import com.kurofish.airdronebbs.data.BbsPost;
 import com.kurofish.airdronebbs.data.VideoItem;
@@ -47,6 +49,7 @@ import static android.support.v4.content.ContextCompat.getSystemService;
 public class TeachingFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseStorage storage;
+    private FirebaseAuth mAuth;
     private RecyclerView videoRecyclerView;
     private RecyclerView videoRecyclerView2;
     private FirestoreRecyclerAdapter adapter;
@@ -60,6 +63,7 @@ public class TeachingFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        mAuth = FirebaseAuth.getInstance();
         videoRecyclerView = view.findViewById(R.id.videoRecyclerView);
         videoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         videoRecyclerView.addItemDecoration(new SpaceItemDecoration(0, 16));
@@ -139,24 +143,27 @@ public class TeachingFragment extends Fragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Query query1 = db.collection(getString(R.string.video_collection_id)).whereEqualTo("md5", model.getMd5());
+                        query1.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                String docID = queryDocumentSnapshots.getDocuments().get(0).getReference().getId();
+                                if (!mAuth.getCurrentUser().getDisplayName().equals(model.getUploader())) {
+                                    queryDocumentSnapshots.getDocuments().get(0).getReference().update("click", model.getClick() + 1);
+                                }
+                                startActivity(new Intent(getActivity(), PlayVideoActivity.class));
+                            }
+                        });
                     }
                 });
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        Query query1 = db.collection(getString(R.string.video_collection_id)).whereEqualTo("title", model.getTitle());
-                        query1.get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        String md5 = queryDocumentSnapshots.getDocuments().get(0).getString("md5");
-                                        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                                        ClipData mClipData = ClipData.newPlainText("Label", md5);
-                                        cm.setPrimaryClip(mClipData);
-                                        Toast.makeText(getContext(), "Copy Item ID Succeed", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                        String md5 = model.getMd5();
+                        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData mClipData = ClipData.newPlainText("Label", md5);
+                        cm.setPrimaryClip(mClipData);
+                        Toast.makeText(getContext(), "Copy Item ID Succeed", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 });
@@ -211,18 +218,11 @@ public class TeachingFragment extends Fragment {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        Query query1 = db.collection(getString(R.string.video_collection_id)).whereEqualTo("title", model.getTitle());
-                        query1.get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        String md5 = queryDocumentSnapshots.getDocuments().get(0).getString("md5");
-                                        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-                                        ClipData mClipData = ClipData.newPlainText("Label", md5);
-                                        cm.setPrimaryClip(mClipData);
-                                        Toast.makeText(getContext(), "Copy Item ID Succeed", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                        String md5 = model.getMd5();
+                        ClipboardManager cm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData mClipData = ClipData.newPlainText("Label", md5);
+                        cm.setPrimaryClip(mClipData);
+                        Toast.makeText(getContext(), "Copy Item ID Succeed", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 });

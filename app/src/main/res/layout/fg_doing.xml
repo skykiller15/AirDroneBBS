@@ -16,7 +16,7 @@
         app:search_version_margins="menu_item" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addItemFloatingActionButton2"
+        android:id="@+id/addDoingFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

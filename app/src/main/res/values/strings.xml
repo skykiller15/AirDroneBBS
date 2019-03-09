@@ -96,4 +96,15 @@
     <string name="title_activity_my_posts">MyPostsActivity</string>
     <string name="title_activity_my_videos">MyVideosActivity</string>
     <string name="title_activity_my_chat_posts">MyChatPostsActivity</string>
+
+    <!-- Strings related to user acts -->
+    <string name="act_name">Activity Name</string>
+    <string name="act_join_num">N/M</string>
+    <string name="act_date">yyyy-mm-dd hh:mm</string>
+    <string name="act_collection_id">ActivityPosts</string>
+
+    <string name="title_activity_play_video">PlayVideoActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
 </resources>

@@ -3,6 +3,7 @@ package com.kurofish.airdronebbs.activities;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -97,7 +98,7 @@ public class MyVideosActivity extends AppCompatActivity {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        startActivity(new Intent(MyVideosActivity.this, PlayVideoActivity.class));
                     }
                 });
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
