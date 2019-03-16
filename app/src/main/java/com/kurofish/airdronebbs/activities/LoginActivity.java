@@ -22,21 +22,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.kurofish.airdronebbs.MainActivity;
 import com.kurofish.airdronebbs.R;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginTAG";
 
     private TextInputEditText lEmailField;
     private TextInputEditText lPasswordField;
 
-    private Button lLoginButton;
-    private Button lRegisterButton;
-
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
 
     private Boolean isAllInfoValid = false;
-    private View focusView = lEmailField;
+    private View focusView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +44,11 @@ public class LoginActivity extends AppCompatActivity {
 
         lEmailField = findViewById(R.id.lEmailEditText);
         lPasswordField = findViewById(R.id.lPasswordEditText);
-        lLoginButton = findViewById(R.id.lLoginButton);
-        lRegisterButton = findViewById(R.id.lRegisterButton);
+        Button lLoginButton = findViewById(R.id.lLoginButton);
+        Button lRegisterButton = findViewById(R.id.lRegisterButton);
         progressBar = findViewById(R.id.lProgressBar);
         mAuth = FirebaseAuth.getInstance();
+        focusView = lEmailField;
 
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -89,8 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        String email = lEmailField.getText().toString();
-        String password = lPasswordField.getText().toString();
+        String email = Objects.requireNonNull(lEmailField.getText()).toString();
+        String password = Objects.requireNonNull(lPasswordField.getText()).toString();
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            //FirebaseUser user = mAuth.getCurrentUser();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         } else {
                             // If sign in fails, display a message to the user.
@@ -126,7 +126,6 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(TAG, "Inital lEmailField failed");
             isAllInfoValid = false;
             focusView = lEmailField;
-            return;
         } else {
             String email = lEmailField.getText().toString();
 
@@ -151,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(TAG, "Initial lPasswordField failed");
             isAllInfoValid = false;
             focusView = lPasswordField;
-            return;
         } else {
             String password = lPasswordField.getText().toString();
 

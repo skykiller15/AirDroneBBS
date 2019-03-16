@@ -27,10 +27,9 @@ import com.kurofish.airdronebbs.utils.BadWordUtil2;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Objects;
 
 public class BbsAddPostActivity extends AppCompatActivity {
-    private Button cancelButton;
-    private Button postButton;
     private String collectionID;
     private EditText mainTitleEditText;
     private EditText subTitleEditText;
@@ -49,14 +48,15 @@ public class BbsAddPostActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if (bundle.getString("section_name").equals(getString(R.string.bbs_tech_section))) {
+        assert bundle != null;
+        if (Objects.equals(bundle.getString("section_name"), getString(R.string.bbs_tech_section))) {
             collectionID = getString(R.string.tech_collection_id);
-        } else if (bundle.getString("section_name").equals(getString(R.string.bbs_chat_section))) {
+        } else if (Objects.equals(bundle.getString("section_name"), getString(R.string.bbs_chat_section))) {
             collectionID = getString(R.string.chat_collection_id);
         }
 
-        cancelButton = findViewById(R.id.cancelButton);
-        postButton = findViewById(R.id.postButton);
+        Button cancelButton = findViewById(R.id.cancelButton);
+        Button postButton = findViewById(R.id.postButton);
         mainTitleEditText = findViewById(R.id.mainTitleEditText);
         subTitleEditText = findViewById(R.id.subTitleEditText);
         textEditText = findViewById(R.id.textEditText);
@@ -82,6 +82,7 @@ public class BbsAddPostActivity extends AppCompatActivity {
 
     private boolean addPost() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        assert currentUser != null;
         String author = currentUser.getDisplayName();
         String mainTitle = mainTitleEditText.getText().toString();
         String subTitle = subTitleEditText.getText().toString();
@@ -146,9 +147,6 @@ public class BbsAddPostActivity extends AppCompatActivity {
             return false;
         } else if (bbsPost.getSub_title().equals("")) {
             return false;
-        } else if (bbsPost.getText().equals("")) {
-            return false;
-        }
-        return true;
+        } else return !bbsPost.getText().equals("");
     }
 }

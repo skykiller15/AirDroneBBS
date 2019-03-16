@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText rEmailField;
     private TextInputEditText rPasswordField;
     private TextInputEditText rConfirmField;
-    private Button rRegisterButton;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
@@ -50,7 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
         rEmailField = findViewById(R.id.rEmailEditText);
         rPasswordField = findViewById(R.id.rPasswordEditText);
         rConfirmField = findViewById(R.id.rConfirmEditText);
-        rRegisterButton = findViewById(R.id.rRegisterButton);
+        Button rRegisterButton = findViewById(R.id.rRegisterButton);
         progressBar = findViewById(R.id.rProgressBar);
 
         progressBar.setVisibility(View.INVISIBLE);
@@ -73,13 +72,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (!isAllInfoValid) {
             focusView.requestFocus();
-            return;
         } else {
             progressBar.setVisibility(View.VISIBLE);
 
             String email = Objects.requireNonNull(rEmailField.getText()).toString();
             String password = Objects.requireNonNull(rPasswordField.getText()).toString();
-            final String userName = Objects.requireNonNull(rUserNameField.getText().toString());
+            final String userName = Objects.requireNonNull(Objects.requireNonNull(rUserNameField.getText()).toString());
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -92,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         .setDisplayName(userName)
                                         .build();
 
+                                assert user != null;
                                 user.updateProfile(profileUpdates)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -122,7 +121,6 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e(TAG, "Initial rUserNameField failed");
             isAllInfoValid = false;
             focusView = rUserNameField;
-            return;
         } else {
             String userName = rUserNameField.getText().toString();
 
@@ -147,7 +145,6 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e(TAG, "Initial rEmailField failed");
             isAllInfoValid = false;
             focusView = rEmailField;
-            return;
         } else {
             String email = rEmailField.getText().toString();
 
@@ -172,7 +169,6 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e(TAG, "Initial rPasswordField failed");
             isAllInfoValid = false;
             focusView = rPasswordField;
-            return;
         } else {
             String password = rPasswordField.getText().toString();
 
@@ -197,10 +193,9 @@ public class RegisterActivity extends AppCompatActivity {
             Log.e(TAG, "Initial rConfirmField failed");
             isAllInfoValid = false;
             focusView = rConfirmField;
-            return;
         } else {
             String confirm = rConfirmField.getText().toString();
-            String password = rPasswordField.getText().toString();
+            String password = Objects.requireNonNull(rPasswordField.getText()).toString();
 
             if (TextUtils.isEmpty(confirm)) {
                 rConfirmField.setError(getString(R.string.error_field_required));

@@ -29,6 +29,7 @@ import com.kurofish.airdronebbs.R;
 import com.kurofish.airdronebbs.data.BbsPost;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class MyTechPostsActivity extends AppCompatActivity {
@@ -46,7 +47,7 @@ public class MyTechPostsActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.my_tech_posts);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
@@ -58,7 +59,7 @@ public class MyTechPostsActivity extends AppCompatActivity {
     }
 
     private void showMyPosts() {
-        String userName = mAuth.getCurrentUser().getDisplayName();
+        String userName = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
         Query query = db.collection(getString(R.string.tech_collection_id)).whereEqualTo("author", userName).orderBy("time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<BbsPost> response = new FirestoreRecyclerOptions.Builder<BbsPost>()
@@ -124,7 +125,7 @@ public class MyTechPostsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

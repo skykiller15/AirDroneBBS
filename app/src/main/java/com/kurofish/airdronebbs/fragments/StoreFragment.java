@@ -27,9 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.kurofish.airdronebbs.MainActivity;
 import com.kurofish.airdronebbs.R;
-import com.kurofish.airdronebbs.activities.PostDetailActivity;
 import com.kurofish.airdronebbs.activities.StoreAddItemActivity;
 import com.kurofish.airdronebbs.data.StoreItem;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
@@ -38,24 +36,22 @@ import java.util.Objects;
 
 public class StoreFragment extends Fragment {
     private FirebaseFirestore db;
-    private FirebaseStorage storage;
     private RecyclerView itemRecyclerView;
     private FirestoreRecyclerAdapter adapter;
     private StorageReference storageReference;
-    private FloatingActionButton addItemFAB;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_store, container, false);
         db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         itemRecyclerView = view.findViewById(R.id.tradeItemRecyclerView);
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         itemRecyclerView.setLayoutManager(gridLayoutManager);
         showItems();
 
-        addItemFAB = view.findViewById(R.id.addItemFloatingActionButton);
+        FloatingActionButton addItemFAB = view.findViewById(R.id.addItemFloatingActionButton);
         addItemFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +91,7 @@ public class StoreFragment extends Fragment {
                     @Override
                     public boolean onLongClick(View v) {
                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                        if (publisher.equals(mAuth.getCurrentUser().getDisplayName())) {
+                        if (publisher.equals(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName())) {
                             final AlertDialog.Builder normalDialog =
                                     new AlertDialog.Builder(getContext());
                             normalDialog.setMessage(getString(R.string.delete_message));
@@ -144,7 +140,7 @@ public class StoreFragment extends Fragment {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

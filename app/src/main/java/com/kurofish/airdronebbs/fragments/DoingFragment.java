@@ -1,5 +1,6 @@
 package com.kurofish.airdronebbs.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,8 +19,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
 import com.kurofish.airdronebbs.R;
+import com.kurofish.airdronebbs.activities.AddDoingActivity;
 import com.kurofish.airdronebbs.data.DoingItem;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 import com.lapism.searchview.widget.SearchView;
@@ -29,16 +30,15 @@ import java.util.Random;
 public class DoingFragment extends Fragment {
 
     private RecyclerView doingRecyclerView;
-    private FloatingActionButton addDoingFAB;
     private SearchView doingSearchView;
     private FirestoreRecyclerAdapter adapter;
     private FirebaseFirestore db;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_doing, container, false);
         doingRecyclerView = view.findViewById(R.id.doingRecyclerView);
-        addDoingFAB = view.findViewById(R.id.addDoingFloatingActionButton);
+        FloatingActionButton addDoingFAB = view.findViewById(R.id.addDoingFloatingActionButton);
         doingSearchView = view.findViewById(R.id.doingSearchView);
         doingRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         db = FirebaseFirestore.getInstance();
@@ -48,7 +48,7 @@ public class DoingFragment extends Fragment {
         addDoingFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getActivity(), AddDoingActivity.class));
             }
         });
         return view;
@@ -102,7 +102,7 @@ public class DoingFragment extends Fragment {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

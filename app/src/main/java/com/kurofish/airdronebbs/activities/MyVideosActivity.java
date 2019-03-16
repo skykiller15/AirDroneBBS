@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,19 +32,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kurofish.airdronebbs.R;
 import com.kurofish.airdronebbs.data.VideoItem;
-import com.kurofish.airdronebbs.fragments.TeachingFragment;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 
 import java.util.Objects;
-
-import static java.security.AccessController.getContext;
 
 public class MyVideosActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter adapter;
     private FirebaseAuth mAuth;
-    private FirebaseStorage storage;
     private StorageReference storageReference;
 
     @Override
@@ -59,13 +53,13 @@ public class MyVideosActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.my_videos);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         recyclerView = findViewById(R.id.myVideosRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(MyVideosActivity.this));
@@ -73,7 +67,7 @@ public class MyVideosActivity extends AppCompatActivity {
     }
 
     private void showMyVideos() {
-        String userName = mAuth.getCurrentUser().getDisplayName();
+        String userName = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
         Query query;
         query = db.collection(getString(R.string.video_collection_id)).whereEqualTo("uploader", userName).orderBy("id", Query.Direction.DESCENDING);
 
@@ -131,7 +125,7 @@ public class MyVideosActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -96,8 +95,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     };
 
     private VideoView mVideoView;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +105,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         mVisible = true;
         mContentView = findViewById(R.id.fullscreen_content);
         mVideoView = findViewById(R.id.videoView);
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageReference = storage.getReference();
 
         mVideoView.setMediaController(new MediaController(this));
         mVideoView.setOnCompletionListener( new MyPlayerOnCompletionListener());

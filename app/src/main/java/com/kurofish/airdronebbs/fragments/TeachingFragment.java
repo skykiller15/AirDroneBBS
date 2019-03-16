@@ -6,14 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,7 +22,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -34,8 +30,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.kurofish.airdronebbs.R;
 import com.kurofish.airdronebbs.activities.PlayVideoActivity;
-import com.kurofish.airdronebbs.activities.PostDetailActivity;
-import com.kurofish.airdronebbs.data.BbsPost;
 import com.kurofish.airdronebbs.data.VideoItem;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 import com.lapism.searchview.Search;
@@ -43,12 +37,8 @@ import com.lapism.searchview.widget.SearchView;
 
 import java.util.Objects;
 
-import static android.support.v4.content.ContextCompat.getSystemService;
-
-
 public class TeachingFragment extends Fragment {
     private FirebaseFirestore db;
-    private FirebaseStorage storage;
     private FirebaseAuth mAuth;
     private RecyclerView videoRecyclerView;
     private RecyclerView videoRecyclerView2;
@@ -58,10 +48,10 @@ public class TeachingFragment extends Fragment {
     private SearchView searchView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_teaching, container, false);
         db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         mAuth = FirebaseAuth.getInstance();
         videoRecyclerView = view.findViewById(R.id.videoRecyclerView);
@@ -147,8 +137,7 @@ public class TeachingFragment extends Fragment {
                         query1.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                String docID = queryDocumentSnapshots.getDocuments().get(0).getReference().getId();
-                                if (!mAuth.getCurrentUser().getDisplayName().equals(model.getUploader())) {
+                                if (!Objects.equals(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName(), model.getUploader())) {
                                     queryDocumentSnapshots.getDocuments().get(0).getReference().update("click", model.getClick() + 1);
                                 }
                                 startActivity(new Intent(getActivity(), PlayVideoActivity.class));
@@ -179,7 +168,7 @@ public class TeachingFragment extends Fragment {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };
@@ -238,7 +227,7 @@ public class TeachingFragment extends Fragment {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

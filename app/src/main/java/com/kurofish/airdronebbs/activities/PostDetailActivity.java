@@ -183,7 +183,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        if (post.getAuthor().equals(mAuth.getCurrentUser().getDisplayName()) ||
+                        if (post.getAuthor().equals(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName()) ||
                                 model.getAuthor().equals(mAuth.getCurrentUser().getDisplayName())) {
                             final AlertDialog.Builder normalDialog =
                                     new AlertDialog.Builder(PostDetailActivity.this);
@@ -228,7 +228,7 @@ public class PostDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };
@@ -307,7 +307,7 @@ public class PostDetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_post_detail, menu);
-        if (!post.getAuthor().equals(mAuth.getCurrentUser().getDisplayName())) {
+        if (!post.getAuthor().equals(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName())) {
             menu.getItem(0).setVisible(false);
         }
         return true;

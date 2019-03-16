@@ -9,6 +9,7 @@ public class DoingItem {
     private Date date;
     private long cur_participant;
     private long full_participant;
+    private String detail;
 
     public String getAnnouncer() {
         return announcer;
@@ -56,5 +57,13 @@ public class DoingItem {
 
     public void setFull_participant(long full_participant) {
         this.full_participant = full_participant;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

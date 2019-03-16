@@ -22,10 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private DoingFragment doingFragment;
     private MeFragment meFragment;
 
-    private android.app.FragmentManager fragmentManager;
-
-    private BottomNavigationView bottomNavigationView;
-
     private Fragment[] fragments;
 
     @Override
@@ -40,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
         meFragment = new MeFragment();
         fragments = new Fragment[]{bbsFragment, teachingFragment, storeFragment, doingFragment, meFragment};
 
-        fragmentManager = getFragmentManager();
-
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

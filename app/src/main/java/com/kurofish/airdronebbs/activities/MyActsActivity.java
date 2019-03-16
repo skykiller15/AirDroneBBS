@@ -3,8 +3,6 @@ package com.kurofish.airdronebbs.activities;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,9 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.kurofish.airdronebbs.R;
 import com.kurofish.airdronebbs.data.DoingItem;
-import com.kurofish.airdronebbs.fragments.DoingFragment;
 import com.kurofish.airdronebbs.utils.SpaceItemDecoration;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class MyActsActivity extends AppCompatActivity {
@@ -44,7 +42,7 @@ public class MyActsActivity extends AppCompatActivity {
         toolbar.setTitle(R.string.my_activities);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
@@ -56,7 +54,7 @@ public class MyActsActivity extends AppCompatActivity {
     }
 
     private void showMyDoings() {
-        String userName = mAuth.getCurrentUser().getDisplayName();
+        String userName = Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName();
         Query query = db.collection(getString(R.string.act_collection_id)).whereEqualTo("announcer", userName).orderBy("id", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<DoingItem> response = new FirestoreRecyclerOptions.Builder<DoingItem>()
@@ -104,7 +102,7 @@ public class MyActsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

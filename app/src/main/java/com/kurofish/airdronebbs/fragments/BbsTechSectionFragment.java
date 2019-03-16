@@ -32,20 +32,18 @@ import java.util.Random;
 public class BbsTechSectionFragment extends Fragment {
     private RecyclerView recyclerView;
 
-    private ProgressBar progressBar;
-
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter adapter;
 
     private long isLoved = 0;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_bbs_section, container, false);
 
         db = FirebaseFirestore.getInstance();
-        progressBar = view.findViewById(R.id.bProgressBar);
+        ProgressBar progressBar = view.findViewById(R.id.bProgressBar);
         recyclerView = view.findViewById(R.id.bsRecyclerView);
 
         progressBar.setVisibility(View.VISIBLE);
@@ -132,7 +130,7 @@ public class BbsTechSectionFragment extends Fragment {
             }
 
             @Override
-            public void onError(FirebaseFirestoreException e) {
+            public void onError(@NonNull FirebaseFirestoreException e) {
                 Log.e("error", e.getMessage());
             }
         };

@@ -21,25 +21,22 @@ import java.util.ArrayList;
 
 public class BbsFragment extends Fragment {
     private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private BbsFPAdapter bbsFPAdapter = null;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> tabIndicators = new ArrayList<>();
-    private FloatingActionButton addPostFAB;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fg_bbs, container, false);
         tabLayout = view.findViewById(R.id.bTabLayout);
-        viewPager = view.findViewById(R.id.bViewPager);
-        addPostFAB = view.findViewById(R.id.addPostFAB);
+        ViewPager viewPager = view.findViewById(R.id.bViewPager);
+        FloatingActionButton addPostFAB = view.findViewById(R.id.addPostFAB);
 
         fragments.add(new BbsTechSectionFragment());
         fragments.add(new BbsChatSectionFragment());
 
         tabIndicators.add(getString(R.string.bbs_tech_section));
         tabIndicators.add(getString(R.string.bbs_chat_section));
-        bbsFPAdapter = new BbsFPAdapter(getChildFragmentManager());
+        BbsFPAdapter bbsFPAdapter = new BbsFPAdapter(getChildFragmentManager());
         Log.d("BBSTAG", "test");
 
         viewPager.setAdapter(bbsFPAdapter);
@@ -61,7 +58,7 @@ public class BbsFragment extends Fragment {
     }
 
     public class BbsFPAdapter extends FragmentPagerAdapter {
-        public BbsFPAdapter(FragmentManager fm) {
+        BbsFPAdapter(FragmentManager fm) {
             super(fm);
         }
 

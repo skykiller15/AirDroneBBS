@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -17,8 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.algolia.search.saas.Client;
-import com.algolia.search.saas.Index;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -32,10 +28,8 @@ import com.kurofish.airdronebbs.R;
 import com.kurofish.airdronebbs.data.StoreItem;
 import com.yalantis.ucrop.UCrop;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
+import java.util.Objects;
 
 import static com.kurofish.airdronebbs.utils.MD5AndSHA.MD5_SHA;
 
@@ -43,7 +37,6 @@ public class StoreAddItemActivity extends AppCompatActivity {
     private ImageView addItemIV;
     private EditText addItemNameET;
     private EditText addItemPriceET;
-    private Button itemUploadButton;
     private String name;
     private String pic_name;
     private long price;
@@ -56,18 +49,18 @@ public class StoreAddItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_add_item);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.addItemToolbar);
+        Toolbar toolbar = findViewById(R.id.addItemToolbar);
         toolbar.setTitle("Upload an item");
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         addItemIV = findViewById(R.id.addItemImageView);
         addItemNameET = findViewById(R.id.addItemNameEditText);
         addItemPriceET = findViewById(R.id.addItemPriceEditText);
-        itemUploadButton = findViewById(R.id.itemUploadButton);
+        Button itemUploadButton = findViewById(R.id.itemUploadButton);
 
         addItemIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +123,7 @@ public class StoreAddItemActivity extends AppCompatActivity {
         final StoreItem newItem = new StoreItem();
         String md5 = MD5_SHA(name, "MD5");
 
-        newItem.setPublisher(mAuth.getCurrentUser().getDisplayName());
+        newItem.setPublisher(Objects.requireNonNull(mAuth.getCurrentUser()).getDisplayName());
         newItem.setName(name);
         newItem.setPic_name(name.toLowerCase());
         newItem.setPrice(price);
@@ -175,8 +168,7 @@ public class StoreAddItemActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            final Uri resultUri = UCrop.getOutput(data);
-            itemPicUri = resultUri;
+            itemPicUri = UCrop.getOutput(data);
             addItemIV.setImageURI(itemPicUri);
             Log.d(TAG, itemPicUri.toString());
         } else if (resultCode == UCrop.RESULT_ERROR) {
